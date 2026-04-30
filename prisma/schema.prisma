@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Scan {
+  id        String   @id @default(cuid())
+  tool      String
+  targetUrl String
+  result    String   @default("{}")
+  status    String   @default("pending")
+  createdAt DateTime @default(now())
+}
+
+model Report {
+  id        String   @id @default(cuid())
+  targetUrl String
+  title     String
+  content   String   @default("")
+  severity  String   @default("medium")
+  status    String   @default("draft")
+  createdAt DateTime @default(now())
+}
+
+model Vulnerability {
+  id          String   @id @default(cuid())
+  scanId      String?
+  targetUrl   String
+  type        String
+  severity    String   @default("medium")
+  description String   @default("")
+  payload     String   @default("")
+  status      String   @default("open")
+  createdAt   DateTime @default(now())
+}
